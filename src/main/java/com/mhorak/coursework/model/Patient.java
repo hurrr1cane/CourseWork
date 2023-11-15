@@ -52,6 +52,20 @@ public class Patient implements Serializable {
                 ", Gender: " + gender + ", t: " + t + ", Hemoglobin: " + hemoglobin;
     }
 
+    public String toCsv() {
+        StringBuilder csvBuilder = new StringBuilder();
+
+        csvBuilder.append(number).append(", ");
+        csvBuilder.append(lastName).append(", ");
+        csvBuilder.append(firstName).append(", ");
+        csvBuilder.append(yearOfBirth).append(", ");
+        csvBuilder.append(gender).append(", ");
+        csvBuilder.append(t).append(", ");
+        csvBuilder.append(hemoglobin);
+
+        return csvBuilder.toString();
+    }
+
     public int getAge() {
         return Year.now().getValue() - yearOfBirth;
     }

@@ -19,6 +19,7 @@
             <Menu text="File">
                 <MenuItem text="Open" onAction="#handleOpen"/>
                 <MenuItem text="Save" onAction="#handleSave"/>
+                <MenuItem text="Save as" onAction="#handleSaveAs"/>
                 <MenuItem text="Exit" onAction="#handleExit"/>
             </Menu>
             <Menu text="Edit">
@@ -87,6 +88,9 @@
             </HBox>
             <HBox spacing="10" alignment="CENTER">
                 <Button text="Add Another Patient" style="-fx-min-width: 150px;" onAction="#handleNewPatient"/>
+                <Button text="Edit patient" style="-fx-min-width: 150px;" onAction="#handleEditPatient"/>
+                <Button text="Delete patient" style="-fx-min-width: 150px;" onAction="#handleDeletePatient"/>
+                <Button text="Back to original list" style="-fx-min-width: 150px;" onAction="#handleBack"/>
             </HBox>
         </VBox>
     </VBox>
