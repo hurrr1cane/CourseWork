@@ -1,0 +1,100 @@
+/* Style for the main StackPane */
+.root {
+    -fx-background-color: #222222; /* Dark background color */
+}
+
+/* Style for the VBox containing the TableView and buttons */
+.vbox {
+    -fx-background-color: #222222; /* Dark background color */
+    -fx-padding: 20; /* Padding around the VBox */
+}
+
+/* Style for the TableView */
+.table-view {
+    -fx-background-color: #333333; /* Dark background color for the table */
+    -fx-font-size: 14px; /* Font size for the table */
+}
+
+/* Style for TableView headers */
+.table-view .column-header {
+    -fx-font-weight: bold;
+    -fx-background-color: #333333; /* Dark background color for the table header */
+    -fx-text-fill: #ffffff; /* White text color for table headers */
+}
+
+/* Style for TableView cells */
+.table-row-cell {
+    -fx-background-color: #444444; /* Dark background color for table rows */
+    -fx-text-fill: #ffffff; /* White text color for table cells */
+}
+
+/* Style for buttons */
+.button {
+    -fx-background-color: #00cc00; /* Green background color for buttons */
+    -fx-text-fill: white; /* White text color for buttons */
+    -fx-font-weight: bold; /* Font weight for buttons */
+}
+
+/* Hover effect for buttons */
+.button:hover {
+    -fx-background-color: #00aa00; /* Slightly darker green when hovered */
+}
+
+/* Pressed effect for buttons */
+.button:pressed {
+    -fx-background-color: #008800; /* Even darker green when pressed */
+}
+
+/* Style for text fields in a table */
+.table-cell {
+    -fx-text-fill: #ffffff; /* White text color for table cells */
+}
+
+/* Style for text fields */
+.text-field {
+    -fx-background-color: #444444; /* Dark background color for text fields */
+    -fx-text-fill: #ffffff; /* White text color for text fields */
+}
+
+/* Style for text areas */
+.text-area {
+    -fx-background-color: #444444; /* Dark background color for text areas */
+    -fx-text-fill: #ffffff; /* White text color for text areas */
+}
+
+/* Style for labels */
+.label {
+    -fx-text-fill: #ffffff; /* White text color for labels */
+}
+
+/* Style for the menu bar */
+.menu-bar {
+    -fx-background-color: #333333; /* Dark background color for the menu bar */
+}
+
+/* Style for the menu */
+.menu {
+    -fx-background-color: #333333; /* Dark background color for the menu */
+    -fx-text-fill: #ffffff; /* White text color for the menu */
+}
+
+/* Style for the menu items */
+.menu-item {
+    -fx-background-color: #333333; /* Dark background color for the menu items */
+    -fx-text-fill: #ffffff; /* White text color for the menu items */
+}
+
+/* Style for the table menu */
+.table-view .column-header-background {
+    -fx-background-color: #333333; /* Dark background color for the table menu */
+}
+
+/* Style for the table menu items */
+.table-view .column-header-background .label {
+    -fx-text-fill: #ffffff; /* White text color for the table menu items */
+}
+
+/* Style for the TableHeaderRow and TableHeaderRowContainer */
+.table-view .table-header-row, .table-view .table-header-row-container {
+    -fx-background-color: #333333; /* Dark background color for the table header row */
+}

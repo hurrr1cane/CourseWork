@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="com.mhorak.coursework.MainWindow"
+           minHeight="400.0" minWidth="600.0"
+           prefHeight="400.0" prefWidth="600.0"
+           stylesheets="@styles.css">
+
+
+
+    <!-- Add a menu bar to the top of the window -->
+    <VBox spacing="10" alignment="CENTER_RIGHT" style="-fx-padding: 20">
+
+        <MenuBar>
+            <Menu text="File">
+                <MenuItem text="Open" onAction="#handleOpen"/>
+                <MenuItem text="Save" onAction="#handleSave"/>
+                <MenuItem text="Exit" onAction="#handleExit"/>
+            </Menu>
+            <Menu text="Edit">
+                <MenuItem text="New Patient" onAction="#handleNewPatient"/>
+            </Menu>
+            <Menu text="Help">
+                <!-- Add help-related menu items as needed -->
+            </Menu>
+        </MenuBar>
+
+        <!-- Add a TableView to display the patient records -->
+        <TableView fx:id="tableView" prefHeight="350.0" prefWidth="550.0" VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn text="№" prefWidth="30.0">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="number" />
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn text="Прізвище" prefWidth="200.0">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="lastName" />
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn text="Ім‘я" prefWidth="200.0">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="firstName" />
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn text="Рік народження" prefWidth="100.0">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="yearOfBirth" />
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn text="Стать" prefWidth="60.0">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="gender" />
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn text="t" prefWidth="60.0">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="t" />
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn text="Гемоглобін" prefWidth="100.0">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="hemoglobin" />
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn text="Повідомлення" prefWidth="200.0">
+
+                </TableColumn>
+            </columns>
+        </TableView>
+
+        <!-- Add buttons for actions in three rows with equal width -->
+        <VBox spacing="10">
+            <HBox spacing="10" alignment="CENTER">
+                <Button text="Sort by t" style="-fx-min-width: 200px;" onAction="#handleSortByTButton"/>
+                <Button text="High Hemoglobin in Women" style="-fx-min-width: 200px;" onAction="#handleHighHemoglobinInWomenButton"/>
+                <Button text="Youngest Men with Normal t and Low Hemoglobin" style="-fx-min-width: 200px;" onAction="#handleYoungestMenWithTHemoglobin"/>
+            </HBox>
+            <HBox spacing="10" alignment="CENTER">
+                <Button text="Patients Older Than 40 with High Hemoglobin and Low t" style="-fx-min-width: 150px;" onAction="#handleOlderHighHemoglobinLowT"/>
+                <Button text="Oldest Women with Normal Hemoglobin by Name" style="-fx-min-width: 150px;" onAction="#handleOldestWomenSameNameNormalHemoglobin"/>
+                <Button text="Encourage Young Patients" style="-fx-min-width: 150px;" onAction="#handleEncourageYoungPatients"/>
+            </HBox>
+            <HBox spacing="10" alignment="CENTER">
+                <Button text="Add Another Patient" style="-fx-min-width: 150px;" onAction="#handleNewPatient"/>
+            </HBox>
+        </VBox>
+    </VBox>
+</StackPane>
