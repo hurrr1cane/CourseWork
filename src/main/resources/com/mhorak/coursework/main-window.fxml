@@ -5,7 +5,7 @@
 <?import javafx.scene.control.cell.PropertyValueFactory?>
 <StackPane xmlns="http://javafx.com/javafx"
            xmlns:fx="http://javafx.com/fxml"
-           fx:controller="com.mhorak.coursework.MainWindow"
+           fx:controller="com.mhorak.coursework.controller.MainWindowController"
            minHeight="400.0" minWidth="600.0"
            prefHeight="400.0" prefWidth="600.0"
            stylesheets="@styles.css">

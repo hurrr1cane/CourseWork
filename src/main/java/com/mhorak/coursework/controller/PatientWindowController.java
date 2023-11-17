@@ -1,4 +1,4 @@
-package com.mhorak.coursework;
+package com.mhorak.coursework.controller;
 
 import com.mhorak.coursework.model.Patient;
 import javafx.fxml.FXML;
@@ -7,7 +7,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class PatientWindow {
+public class PatientWindowController {
     @FXML
     private VBox rootVBox; // Assuming you have this reference in your controller
 

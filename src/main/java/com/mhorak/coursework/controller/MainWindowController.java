@@ -1,4 +1,4 @@
-package com.mhorak.coursework;
+package com.mhorak.coursework.controller;
 
 import com.mhorak.coursework.model.Patient;
 import javafx.collections.FXCollections;
@@ -21,10 +21,10 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.mhorak.coursework.PatientsController.loadPatientsFromCsv;
-import static com.mhorak.coursework.PatientsController.savePatientsToCsv;
+import static com.mhorak.coursework.tool.PatientsTool.loadPatientsFromCsv;
+import static com.mhorak.coursework.tool.PatientsTool.savePatientsToCsv;
 
-public class MainWindow {
+public class MainWindowController {
     @FXML
     private TableView<Patient> tableView; // This connects to your TableView in the FXML
     private File openedFile;
@@ -73,15 +73,18 @@ public class MainWindow {
         countingSortByT(females);
 
         // Clear the original patientList and add sorted patients back
-        patientList.clear();
-        patientList.addAll(males);
-        patientList.addAll(females);
+        //patientList.clear();
+        //patientList.addAll(males);
+        //patientList.addAll(females);
+        visiblePatientList.clear();
+        visiblePatientList.addAll(males);
+        visiblePatientList.addAll(females);
 
         // Update the TableView to reflect the sorted list
-        tableView.setItems(patientList);
+        tableView.setItems(visiblePatientList);
 
         // Reset the original t values by dividing them by 100
-        for (Patient patient : patientList) {
+        for (Patient patient : visiblePatientList) {
             patient.setT(patient.getT() / 100);
         }
     }
@@ -206,7 +209,7 @@ public class MainWindow {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("patient-window.fxml"));
             Parent root = loader.load();
 
-            PatientWindow controller = loader.getController();
+            PatientWindowController controller = loader.getController();
             controller.setPatient(patient);
 
             Stage stage = new Stage();

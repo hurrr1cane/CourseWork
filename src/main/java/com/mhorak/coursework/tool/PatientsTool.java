@@ -1,11 +1,11 @@
-package com.mhorak.coursework;
+package com.mhorak.coursework.tool;
 
 import com.mhorak.coursework.model.Patient;
 
 import java.io.*;
 import java.util.List;
 
-public class PatientsController {
+public class PatientsTool {
     public static void savePatientsToCsv(File file, List<Patient> patientList) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
             // Write CSV header
