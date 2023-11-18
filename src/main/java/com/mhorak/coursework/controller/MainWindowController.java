@@ -221,7 +221,7 @@ public class MainWindowController {
 
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
-            stage.setTitle("Patient Form");
+            stage.setTitle("Patient");
 
             // Use showAndWait to make the window modal
             stage.initModality(Modality.APPLICATION_MODAL);
