@@ -43,22 +43,22 @@
                         <PropertyValueFactory property="number" />
                     </cellValueFactory>
                 </TableColumn>
-                <TableColumn prefWidth="200.0" text="Прізвище">
+                <TableColumn prefWidth="200.0" text="Surname">
                     <cellValueFactory>
                         <PropertyValueFactory property="lastName" />
                     </cellValueFactory>
                 </TableColumn>
-                <TableColumn prefWidth="200.0" text="Ім‘я">
+                <TableColumn prefWidth="200.0" text="Name">
                     <cellValueFactory>
                         <PropertyValueFactory property="firstName" />
                     </cellValueFactory>
                 </TableColumn>
-                <TableColumn prefWidth="100.0" text="Рік народження">
+                <TableColumn prefWidth="100.0" text="Birth year">
                     <cellValueFactory>
                         <PropertyValueFactory property="yearOfBirth" />
                     </cellValueFactory>
                 </TableColumn>
-                <TableColumn prefWidth="60.0" text="Стать">
+                <TableColumn prefWidth="60.0" text="Gender">
                     <cellValueFactory>
                         <PropertyValueFactory property="gender" />
                     </cellValueFactory>
@@ -68,12 +68,12 @@
                         <PropertyValueFactory property="t" />
                     </cellValueFactory>
                 </TableColumn>
-                <TableColumn prefWidth="100.0" text="Гемоглобін">
+                <TableColumn prefWidth="100.0" text="Hemoglobin">
                     <cellValueFactory>
                         <PropertyValueFactory property="hemoglobin" />
                     </cellValueFactory>
                 </TableColumn>
-                <TableColumn prefWidth="200.0" text="Повідомлення">
+                <TableColumn prefWidth="200.0" text="Message">
 
                 </TableColumn>
             </columns>

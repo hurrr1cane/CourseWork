@@ -9,7 +9,11 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.scene.layout.VBox;
 import com.mhorak.coursework.exception.*;
+import java.time.Year;
 
+/**
+ * Controller class for the patient window
+ */
 public class PatientWindowController {
 
     @FXML
@@ -34,10 +38,19 @@ public class PatientWindowController {
 
     @FXML
     private VBox rootVBox;
+
+    /**
+     * Initializes the controller class
+     */
     public void initialize() {
         rootVBox.setPadding(new Insets(10));
     }
 
+    /**
+     * Sets the patient object
+     * @param patient The patient object
+     * @param isNewPatient True if the patient is new, false if the patient is being edited
+     */
     public void setPatient(Patient patient, boolean isNewPatient) {
         this.patient = patient;
         // Update form fields with patient data
@@ -46,6 +59,9 @@ public class PatientWindowController {
         }
     }
 
+    /**
+     * Sets the patient object for editing
+     */
     private void setPatientFields() {
         if (patient != null) {
             // Set form fields with patient data
@@ -58,6 +74,9 @@ public class PatientWindowController {
         }
     }
 
+    /**
+     * Saves the patient data
+     */
     @FXML
     private void handleSave() {
         // Validate user input before creating a new Patient object
@@ -67,9 +86,12 @@ public class PatientWindowController {
 
             closeWindow();
         }
-        // If input is not valid, you may choose to display an error message to the user
     }
 
+    /**
+     * Validates the user input
+     * @return True if the input is valid, false otherwise
+     */
     private boolean validateInput() {
         try {
             validateNameField(firstNameField.getText(), true);
@@ -89,34 +111,47 @@ public class PatientWindowController {
         }
     }
 
+    /**
+     * Validates the name and surname fields
+     * @param name The name or surname to validate
+     * @param isName True if the field is the name field, false if the field is the surname field
+     * @throws NameFieldException Thrown when the name field is incorrect
+     * @throws SurnameFieldException Thrown when the surname field is incorrect
+     */
     private void validateNameField(String name, boolean isName) throws NameFieldException, SurnameFieldException {
         // Name should contain only letters and hyphens, not starting or ending with hyphen
 
+        //Name should contain only letters and hyphens, not starting or ending with hyphen and not containing two consecutive hyphens
+        //And be at least 2 characters long and not longer than 30 characters
+        boolean checker = !name.matches("^[a-zA-Z]+(-[a-zA-Z]+)*$") || name.length() < 2 || name.length() > 30;
         if (isName) {
-            if (name == null) {
-                throw new NameFieldException();
-            }
-            if (!name.matches("^[a-zA-Z]+(-[a-zA-Z]+)?$")) {
+            if (checker) {
                 throw new NameFieldException();
             }
         } else {
-            if (name == null) {
-                throw new SurnameFieldException();
-            }
-            if (!name.matches("^[a-zA-Z]+(-[a-zA-Z]+)*$")) {
+            if (checker) {
                 throw new SurnameFieldException();
             }
         }
     }
 
+    /**
+     * Validates the year of birth field
+     * @param year The year of birth to validate
+     * @throws YearOfBirthFieldException Thrown when the year of birth field is incorrect
+     */
     private void validateYearOfBirthField(String year) throws YearOfBirthFieldException {
         // Year of birth should be a positive integer
-        if (!year.matches("^[1-9]\\d*$")) {
+        if (!year.matches("^[1-9]\\d*$") || Year.now().getValue() - Integer.parseInt(year) < 0) {
             throw new YearOfBirthFieldException();
         }
     }
 
-    // New validation method for the gender field
+    /**
+     * Validates the gender field
+     * @param gender The field to be validated
+     * @throws GenderFieldException Thrown when gender field is incorrect
+     */
     private void validateGenderField(String gender) throws GenderFieldException {
         // Gender should not be null or empty
         if (gender == null || gender.trim().isEmpty()) {
@@ -124,20 +159,36 @@ public class PatientWindowController {
         }
     }
 
+    /**
+     * Validates the temperature field
+     * @param temperature The temperature to validate
+     * @throws TemperatureFieldException Thrown when the temperature field is incorrect
+     */
     private void validateTemperatureField(String temperature) throws TemperatureFieldException {
         // Temperature should be a positive decimal number
-        if (!temperature.matches("^\\d*\\.?\\d+$")) {
+        // Temperature must be not higher than 50 degrees Celsius
+        if (!temperature.matches("^\\d*\\.?\\d+$") || Double.parseDouble(temperature) > 50) {
             throw new TemperatureFieldException();
         }
     }
 
+    /**
+     * Validates the hemoglobin field
+     * @param hemoglobin The hemoglobin to validate
+     * @throws HemoglobinFieldException Thrown when the hemoglobin field is incorrect
+     */
     private void validateHemoglobinField(String hemoglobin) throws HemoglobinFieldException {
         // Hemoglobin should be a positive decimal number
-        if (!hemoglobin.matches("^\\d*\\.?\\d+$")) {
+        // Must be not higher than 250 g/L
+        if (!hemoglobin.matches("^\\d*\\.?\\d+$") || Double.parseDouble(hemoglobin) > 250) {
             throw new HemoglobinFieldException();
         }
     }
 
+    /**
+     * Shows an error alert
+     * @param message The message to display
+     */
     private void showErrorAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Validation error");
@@ -146,6 +197,9 @@ public class PatientWindowController {
         alert.showAndWait();
     }
 
+    /**
+     * Creates a new Patient object with the entered data
+     */
     private void createPatientObject() {
         // Create a new Patient object with the entered data
         if (patient == null) {
@@ -158,16 +212,20 @@ public class PatientWindowController {
         patient.setHemoglobin(Double.parseDouble(hemoglobinField.getText()));
         patient.setT(Double.parseDouble(temperatureField.getText()));
         patient.setGender(genderComboBox.getValue());
-
-        // Note: It's essential to handle exceptions, such as NumberFormatException when parsing integers
     }
 
+    /**
+     * Closes the window
+     */
     @FXML
     private void handleCancel() {
         // Close the window without saving
         closeWindow();
     }
 
+    /**
+     * Helper method to close the window
+     */
     private void closeWindow() {
         Stage stage = (Stage) firstNameField.getScene().getWindow();
         stage.close();

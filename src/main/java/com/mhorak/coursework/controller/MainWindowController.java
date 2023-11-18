@@ -1,9 +1,9 @@
 package com.mhorak.coursework.controller;
 
+import com.mhorak.coursework.exception.FileReadException;
 import com.mhorak.coursework.model.Patient;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -12,6 +12,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.image.Image;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -24,19 +25,25 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import static com.mhorak.coursework.tool.PatientsTool.loadPatientsFromCsv;
-import static com.mhorak.coursework.tool.PatientsTool.savePatientsToCsv;
+import static com.mhorak.coursework.tool.PatientsTool.*;
 
+/**
+ * This class is the controller for the main window.
+ * It handles all the events from the main window.
+ */
 public class MainWindowController {
     @FXML
     private TableView<Patient> tableView; // This connects to your TableView in the FXML
     private File openedFile;
     ObservableList<Patient> patientList = FXCollections.observableArrayList();
     ObservableList<Patient> visiblePatientList = FXCollections.observableArrayList();
-
     LinkedList<ObservableList<Patient>> patientListHistory = new LinkedList<>();
     int historyIndex = -1;
 
+    /**
+     * This method is called when the controller is initialized.
+     * It is used to set the TableView items.
+     */
     public void initialize() {
 
         // Set the TableView items
@@ -46,8 +53,12 @@ public class MainWindowController {
 
     }
 
+    /**
+     * This method is called when the "Sort by T" button is clicked.
+     * It sorts the patients by T in ascending order for each gender.
+     */
     @FXML
-    private void handleSortByTButton(ActionEvent event) {
+    private void handleSortByTButton() {
         // Create a copy of the original patientList
         ObservableList<Patient> sortedList = FXCollections.observableArrayList(patientList);
 
@@ -88,54 +99,16 @@ public class MainWindowController {
         }
     }
 
-
-    // Counting Sort method for sorting patients by t (ascending order)
-    private void countingSortByT(ObservableList<Patient> patients) {
-        int maxT = getMaxT(patients);
-
-        int[] count = new int[maxT + 1];
-        Patient[] output = new Patient[patients.size()];
-
-        for (Patient patient : patients) {
-            count[(int) patient.getT()]++;
-        }
-
-        for (int i = 1; i <= maxT; i++) {
-            count[i] += count[i - 1];
-        }
-
-        for (int i = patients.size() - 1; i >= 0; i--) {
-            int t = (int) patients.get(i).getT();
-            output[count[t] - 1] = patients.get(i);
-            count[t]--;
-        }
-
-        patients.clear();
-        patients.addAll(output);
-    }
-
-    // Helper method to find the maximum t value
-    private int getMaxT(ObservableList<Patient> patients) {
-        int maxT = -1;
-
-        for (Patient patient : patients) {
-            int t = (int) patient.getT();
-            if (t > maxT) {
-                maxT = t;
-            }
-        }
-
-        return maxT;
-    }
-
-
+    /**
+     * This method is called when the "Find women with high hemoglobin" button is clicked.
+     */
     @FXML
-    private void handleHighHemoglobinInWomenButton(ActionEvent event) {
+    private void handleHighHemoglobinInWomenButton() {
         // Filter the patientList to include only females with elevated hemoglobin
         ObservableList<Patient> filteredList = patientList.filtered(
                 patient -> patient.isFemale() && patient.isHighHemoglobin());
 
-        // Clear the original patientList and add the filtered patients
+        // Clear the original visiblePatientList and add the filtered patients
         visiblePatientList.clear();
         visiblePatientList.addAll(filteredList);
 
@@ -143,11 +116,14 @@ public class MainWindowController {
         tableView.refresh();
     }
 
+    /**
+     * This method finds youngest man with normal T and low hemoglobin
+     */
     @FXML
-    private void handleYoungestMenWithTHemoglobin(ActionEvent event) {
+    private void handleYoungestMenWithTHemoglobin() {
         // Filter the patientList to include only youngest males with normal T and low hemoglobin
         ObservableList<Patient> filteredList = patientList.filtered(
-                patient -> patient.isMale() && patient.isNormalT() && patient.isLowHemoglobin() && isYoungestMale(patient));
+                patient -> patient.isMale() && patient.isNormalT() && patient.isLowHemoglobin() && isYoungestMale(patient, patientList));
 
         // Clear the original patientList and add the filtered patients
         visiblePatientList.clear();
@@ -157,28 +133,18 @@ public class MainWindowController {
         tableView.refresh();
     }
 
-    // Helper method to check if a patient is the youngest male with normal T and low hemoglobin
-    private boolean isYoungestMale(Patient currentPatient) {
-        for (Patient patient : tableView.getItems()) {
-            if (patient.isMale() && patient.isNormalT() && patient.isLowHemoglobin()) {
-                // Compare ages
-                if (currentPatient.getAge() > patient.getAge()) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
+    /**
+     * This method adds a new patient to the list.
+     */
     @FXML
-    private void handleNewPatient(ActionEvent event) {
+    private void handleNewPatient() {
         // Create a new patient
         Patient newPatient = new Patient();
 
         // Load and show the patient form for adding a new patient
         loadPatientForm(newPatient, true);
 
-
+        //If the patient is created, add it to the list
         if (!newPatient.isEmpty()) {
             // Add the new patient to the list
             newPatient.setNumber(patientList.size() + 1);
@@ -189,14 +155,17 @@ public class MainWindowController {
 
             updateHistoryList();
         }
-
     }
 
+    /**
+     * This method edits the selected patient.
+     */
     @FXML
-    private void handleEditPatient(ActionEvent event) {
+    private void handleEditPatient() {
         // Get the selected patient
         Patient selectedPatient = tableView.getSelectionModel().getSelectedItem();
 
+        // Check if a patient is selected
         if (selectedPatient != null) {
             // Load and show the patient form for editing the selected patient
             loadPatientForm(selectedPatient, false);
@@ -211,6 +180,12 @@ public class MainWindowController {
         }
     }
 
+    /**
+     * This method loads and shows the patient form.
+     *
+     * @param patient      The patient to be edited or added
+     * @param isNewPatient A boolean value indicating whether the patient is new
+     */
     private void loadPatientForm(Patient patient, boolean isNewPatient) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/mhorak/coursework/patient-window.fxml"));
@@ -220,19 +195,26 @@ public class MainWindowController {
             controller.setPatient(patient, isNewPatient);
 
             Stage stage = new Stage();
+            Image icon = new Image("patient.png");
+
             stage.setScene(new Scene(root));
+            stage.getIcons().add(icon);
             stage.setTitle("Patient");
 
             // Use showAndWait to make the window modal
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println(e.getMessage());
         }
     }
 
+    /**
+     * This method called when the "Open" menu item is clicked.
+     * It opens a file chooser dialog and loads the patients from the selected file.
+     */
     @FXML
-    private void handleOpen(ActionEvent event) {
+    private void handleOpen() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Patients CSV File");
 
@@ -243,23 +225,34 @@ public class MainWindowController {
         // Show open file dialog
         File file = fileChooser.showOpenDialog(new Stage());
 
-        if (file != null) {
-            loadPatientsFromCsv(file, patientList);
+        try {
+            if (file != null) {
+                loadPatientsFromCsv(file, patientList);
 
-            // Set the opened file
-            openedFile = file;
+                // Set the opened file
+                openedFile = file;
+            }
+
+            visiblePatientList.clear();
+            visiblePatientList.addAll(patientList);
+            tableView.refresh();
+
+            updateHistoryList();
+        } catch (FileReadException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Error");
+            alert.setContentText("The file cannot be read");
+            alert.show();
         }
-
-        visiblePatientList.clear();
-        visiblePatientList.addAll(patientList);
-        tableView.refresh();
-
-        updateHistoryList();
     }
 
-
+    /**
+     * This method called when the "Save As" menu item is clicked.
+     * It opens a file chooser dialog and saves the patients to the selected file.
+     */
     @FXML
-    void handleSaveAs(ActionEvent event) {
+    void handleSaveAs() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Save Patients CSV File");
 
@@ -278,19 +271,27 @@ public class MainWindowController {
         }
     }
 
+    /**
+     * This method called when the "Save" menu item is clicked.
+     * It saves the patients to the opened file or prompts the user to choose a file if no file is opened.
+     */
     @FXML
-    void handleSave(ActionEvent event) {
+    void handleSave() {
         // Check if a file is opened
         if (openedFile != null) {
             savePatientsToCsv(openedFile, patientList);
         } else {
             // If no file is opened, prompt the user to choose a file
-            handleSaveAs(event);
+            handleSaveAs();
         }
     }
 
+    /**
+     * This method called when the "Exit" menu item is clicked.
+     * It closes the application.
+     */
     @FXML
-    void handleExit(ActionEvent event) {
+    void handleExit() {
         // Get the current stage
         Stage stage = (Stage) tableView.getScene().getWindow();
 
@@ -298,8 +299,12 @@ public class MainWindowController {
         stage.close();
     }
 
+    /**
+     * This method called when the "Help" menu item is clicked.
+     * It displays a help message.
+     */
     @FXML
-    void handleHelp(ActionEvent event) {
+    void handleHelp() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Help");
         alert.setHeaderText("Help");
@@ -307,8 +312,12 @@ public class MainWindowController {
         alert.show();
     }
 
+    /**
+     * This method is called when the "Find older patients with high hemoglobin and low T" button is clicked.
+     * It filters the patients by age, hemoglobin and T.
+     */
     @FXML
-    private void handleOlderHighHemoglobinLowT(ActionEvent event) {
+    private void handleOlderHighHemoglobinLowT() {
         // Filter the patientList to include only patients older than 40 with high hemoglobin and low T
         ObservableList<Patient> filteredList = patientList.filtered(
                 patient -> patient.getAge() > 40 && patient.isHighHemoglobin() && patient.isLowT());
@@ -321,8 +330,11 @@ public class MainWindowController {
         tableView.refresh();
     }
 
+    /**
+     * This method is called when the "Find the oldest women with the same name and normal hemoglobin" button is clicked.
+     */
     @FXML
-    private void handleOldestWomenSameNameNormalHemoglobin(ActionEvent event) {
+    private void handleOldestWomenSameNameNormalHemoglobin() {
         // Filter the patientList to include only women with normal hemoglobin
         ObservableList<Patient> filteredList = patientList.filtered(
                 patient -> patient.isFemale() && patient.isNormalHemoglobin());
@@ -347,18 +359,22 @@ public class MainWindowController {
         tableView.refresh();
     }
 
-
+    /**
+     * This method is called when the "Encourage young patients" button is clicked.
+     * It updates the message field for matching patients.
+     */
     @FXML
-    private void handleEncourageYoungPatients(ActionEvent event) {
-        // Explicitly specify the column type for "Повідомлення"
-        TableColumn<Patient, String> messageColumn = (TableColumn<Patient, String>) tableView.getColumns().get(7); // Assuming "Повідомлення" is the 8th column
+    private void handleEncourageYoungPatients() {
+        // Explicitly specify the column type for "Message"
+        TableColumn<Patient, String> messageColumn = (TableColumn<Patient, String>) tableView.getColumns().get(7);
 
-        handleBack(event);
+        handleBack();
 
-        messageColumn.setCellFactory(new Callback<TableColumn<Patient, String>, TableCell<Patient, String>>() {
+        // Update the message field for matching patients
+        messageColumn.setCellFactory(new Callback<>() {
             @Override
             public TableCell<Patient, String> call(TableColumn<Patient, String> param) {
-                return new TableCell<Patient, String>() {
+                return new TableCell<>() {
                     @Override
                     protected void updateItem(String item, boolean empty) {
                         super.updateItem(item, empty);
@@ -384,22 +400,29 @@ public class MainWindowController {
         tableView.refresh();
     }
 
+    /**
+     * This method is called when the "Delete" button is clicked.
+     * It deletes the selected patient from the list.
+     */
     @FXML
-    void handleDeletePatient(ActionEvent event) {
+    void handleDeletePatient() {
         // Get the selected patient
         Patient selectedPatient = tableView.getSelectionModel().getSelectedItem();
 
         // Remove the selected patient from the list
         patientList.remove(selectedPatient);
 
+        // Update the patient numbers
         setPatientsNumbers(patientList);
 
-        // Update the TableView to reflect the new patient
-        tableView.setItems(patientList);
+        handleBack();
 
         updateHistoryList();
     }
 
+    /**
+     * This method is used to update the history list.
+     */
     private void updateHistoryList() {
         // Add the current patientList to the history
         patientListHistory.removeAll(patientListHistory.subList(historyIndex + 1, patientListHistory.size()));
@@ -407,14 +430,22 @@ public class MainWindowController {
         historyIndex++;
     }
 
+    /**
+     * This method is used to update the patient numbers.
+     *
+     * @param patientList The list of patients
+     */
     private void setPatientsNumbers(ObservableList<Patient> patientList) {
         for (int i = 0; i < patientList.size(); i++) {
             patientList.get(i).setNumber(i + 1);
         }
     }
 
+    /**
+     * This method is called when the "Back to original list" button is clicked.
+     */
     @FXML
-    void handleBack(ActionEvent event) {
+    void handleBack() {
 
         visiblePatientList.clear();
         visiblePatientList.addAll(patientList);
@@ -429,7 +460,7 @@ public class MainWindowController {
                     protected void updateItem(String item, boolean empty) {
                         super.updateItem(item, empty);
 
-                            setText(null);
+                        setText(null);
 
                     }
                 };
@@ -437,8 +468,12 @@ public class MainWindowController {
         });
     }
 
+    /**
+     * This method is called when the "Undo" button is clicked.
+     * It restores the previous version of the patient list.
+     */
     @FXML
-    void handleUndo(ActionEvent event) {
+    void handleUndo() {
         if (historyIndex > 0) {
             historyIndex--;
             patientList.clear();
@@ -449,8 +484,12 @@ public class MainWindowController {
         }
     }
 
+    /**
+     * This method is called when the "Redo" button is clicked.
+     * It restores the next version of the patient list.
+     */
     @FXML
-    void handleRedo(ActionEvent event) {
+    void handleRedo() {
         if (historyIndex < patientListHistory.size() - 1) {
             historyIndex++;
             patientList.clear();
