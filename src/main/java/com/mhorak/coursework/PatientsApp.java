@@ -14,6 +14,11 @@ public class PatientsApp extends Application {
         Scene scene = new Scene(fxmlLoader.load(), 1000, 660);
         stage.setTitle("Patients");
         stage.setScene(scene);
+
+        // Set minimum width and height
+        stage.setMinWidth(800);
+        stage.setMinHeight(600);
+
         stage.show();
     }
 

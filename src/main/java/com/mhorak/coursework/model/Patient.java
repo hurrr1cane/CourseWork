@@ -22,6 +22,10 @@ public class Patient implements Serializable {
         this.number = 0;
         this.lastName = null;
         this.firstName = null;
+        this.gender = null;
+        this.yearOfBirth = 0;
+        this.t = 0;
+        this.hemoglobin = 0;
     }
 
     public Patient(int number, String lastName, String firstName, int yearOfBirth, String gender, double t, double hemoglobin) {
@@ -112,6 +116,24 @@ public class Patient implements Serializable {
 
     public boolean isFemale() {
         return gender.equals("Female");
+    }
+
+    public boolean equals(Patient other) {
+        return (this.number == other.number &&
+                this.firstName.equals(other.firstName) &&
+                this.lastName.equals(other.lastName) &&
+                this.yearOfBirth == other.yearOfBirth &&
+                this.t == other.t &&
+                this.hemoglobin == other.hemoglobin);
+    }
+
+    public boolean isEmpty() {
+        return (this.number == 0 &&
+                this.firstName == null &&
+                this.lastName == null &&
+                this.yearOfBirth == 0 &&
+                this.t == 0 &&
+                this.hemoglobin == 0);
     }
 
 }

@@ -27,6 +27,8 @@ public class PatientsTool {
             // Assuming the first line is the header, read and ignore it
             String headerLine = reader.readLine();
 
+            patientList.clear();
+
             // Read patient data from the CSV file
             String line;
             while ((line = reader.readLine()) != null) {

@@ -94,7 +94,15 @@
     -fx-text-fill: #ffffff; /* White text color for the table menu items */
 }
 
-/* Style for the TableHeaderRow and TableHeaderRowContainer */
-.table-view .table-header-row, .table-view .table-header-row-container {
-    -fx-background-color: #333333; /* Dark background color for the table header row */
+/* Style for the ComboBox */
+.combo-box {
+    -fx-background-color: #444444; /* Dark background color for ComboBox */
+    -fx-text-fill: #ffffff; /* White text color for ComboBox */
+    -fx-pref-width: 150.0; /* Set a preferred width, adjust as needed */
+}
+
+/* Style for the ComboBox dropdown list */
+.combo-box-popup .list-view {
+    -fx-background-color: #444444; /* Dark background color for ComboBox dropdown */
+    -fx-text-fill: #ffffff; /* White text color for ComboBox dropdown items */
 }
