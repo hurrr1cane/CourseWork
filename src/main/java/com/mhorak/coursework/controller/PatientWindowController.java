@@ -9,6 +9,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.scene.layout.VBox;
 import com.mhorak.coursework.exception.*;
+
 import java.time.Year;
 
 /**
@@ -48,7 +49,8 @@ public class PatientWindowController {
 
     /**
      * Sets the patient object
-     * @param patient The patient object
+     *
+     * @param patient      The patient object
      * @param isNewPatient True if the patient is new, false if the patient is being edited
      */
     public void setPatient(Patient patient, boolean isNewPatient) {
@@ -90,6 +92,7 @@ public class PatientWindowController {
 
     /**
      * Validates the user input
+     *
      * @return True if the input is valid, false otherwise
      */
     private boolean validateInput() {
@@ -113,9 +116,10 @@ public class PatientWindowController {
 
     /**
      * Validates the name and surname fields
-     * @param name The name or surname to validate
+     *
+     * @param name   The name or surname to validate
      * @param isName True if the field is the name field, false if the field is the surname field
-     * @throws NameFieldException Thrown when the name field is incorrect
+     * @throws NameFieldException    Thrown when the name field is incorrect
      * @throws SurnameFieldException Thrown when the surname field is incorrect
      */
     private void validateNameField(String name, boolean isName) throws NameFieldException, SurnameFieldException {
@@ -137,6 +141,7 @@ public class PatientWindowController {
 
     /**
      * Validates the year of birth field
+     *
      * @param year The year of birth to validate
      * @throws YearOfBirthFieldException Thrown when the year of birth field is incorrect
      */
@@ -149,6 +154,7 @@ public class PatientWindowController {
 
     /**
      * Validates the gender field
+     *
      * @param gender The field to be validated
      * @throws GenderFieldException Thrown when gender field is incorrect
      */
@@ -161,6 +167,7 @@ public class PatientWindowController {
 
     /**
      * Validates the temperature field
+     *
      * @param temperature The temperature to validate
      * @throws TemperatureFieldException Thrown when the temperature field is incorrect
      */
@@ -174,6 +181,7 @@ public class PatientWindowController {
 
     /**
      * Validates the hemoglobin field
+     *
      * @param hemoglobin The hemoglobin to validate
      * @throws HemoglobinFieldException Thrown when the hemoglobin field is incorrect
      */
@@ -187,6 +195,7 @@ public class PatientWindowController {
 
     /**
      * Shows an error alert
+     *
      * @param message The message to display
      */
     private void showErrorAlert(String message) {

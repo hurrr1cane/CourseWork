@@ -3,6 +3,7 @@ package com.mhorak.coursework.tool;
 import com.mhorak.coursework.exception.FileReadException;
 import com.mhorak.coursework.model.Patient;
 import javafx.collections.ObservableList;
+
 import java.io.*;
 import java.util.List;
 
@@ -12,7 +13,8 @@ import java.util.List;
 public class PatientsTool {
     /**
      * Saves the patient list to a CSV file
-     * @param file The file to save to
+     *
+     * @param file        The file to save to
      * @param patientList The list of patients to save
      */
     public static void savePatientsToCsv(File file, List<Patient> patientList) {
@@ -33,7 +35,8 @@ public class PatientsTool {
 
     /**
      * Loads patients from a CSV file
-     * @param file The file to load from
+     *
+     * @param file        The file to load from
      * @param patientList The list to load patients into
      * @throws FileReadException Thrown when the file cannot be read
      */
@@ -60,6 +63,7 @@ public class PatientsTool {
 
     /**
      * Parses a patient from a CSV line
+     *
      * @param csvLine The CSV line to parse
      * @return The parsed patient
      * @throws FileReadException Thrown when the CSV line cannot be parsed
@@ -92,6 +96,7 @@ public class PatientsTool {
 
     /**
      * Sorts the patient list by t using counting sort
+     *
      * @param patients The list of patients to sort
      */
     public static void countingSortByT(ObservableList<Patient> patients) {

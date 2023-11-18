@@ -1,6 +1,7 @@
 package com.mhorak.coursework.model;
 
 import lombok.Data;
+
 import java.io.Serializable;
 import java.time.Year;
 
@@ -33,13 +34,14 @@ public class Patient implements Serializable {
 
     /**
      * Constructor with all fields
-     * @param number Patient number
-     * @param lastName Patient last name
-     * @param firstName Patient first name
+     *
+     * @param number      Patient number
+     * @param lastName    Patient last name
+     * @param firstName   Patient first name
      * @param yearOfBirth Patient year of birth
-     * @param gender Patient's gender
-     * @param t Patient's temperature
-     * @param hemoglobin Patient's hemoglobin
+     * @param gender      Patient's gender
+     * @param t           Patient's temperature
+     * @param hemoglobin  Patient's hemoglobin
      */
     public Patient(int number, String lastName, String firstName, int yearOfBirth, String gender, double t, double hemoglobin) {
         this.number = number;
@@ -53,6 +55,7 @@ public class Patient implements Serializable {
 
     /**
      * Copy constructor
+     *
      * @param other Patient object
      */
     public Patient(Patient other) {
@@ -67,6 +70,7 @@ public class Patient implements Serializable {
 
     /**
      * Returns a string representation of the patient
+     *
      * @return String representation of the patient
      */
     @Override
@@ -77,6 +81,7 @@ public class Patient implements Serializable {
 
     /**
      * Returns a CSV representation of the patient
+     *
      * @return CSV representation of the patient
      */
     public String toCsv() {
@@ -91,6 +96,7 @@ public class Patient implements Serializable {
 
     /**
      * Returns the patient's age
+     *
      * @return Patient's age
      */
     public int getAge() {
@@ -99,6 +105,7 @@ public class Patient implements Serializable {
 
     /**
      * Returns true if the patient's temperature is normal
+     *
      * @return True if the patient's temperature is normal
      */
     public boolean isNormalT() {
@@ -107,6 +114,7 @@ public class Patient implements Serializable {
 
     /**
      * Returns true if the patient's temperature is low
+     *
      * @return True if the patient's temperature is low
      */
     public boolean isLowT() {
@@ -115,6 +123,7 @@ public class Patient implements Serializable {
 
     /**
      * Returns true if the patient's temperature is high
+     *
      * @return True if the patient's temperature is high
      */
     public boolean isHighT() {
@@ -123,6 +132,7 @@ public class Patient implements Serializable {
 
     /**
      * Returns true if the patient's hemoglobin is high
+     *
      * @return True if the patient's hemoglobin is high
      */
     public boolean isHighHemoglobin() {
@@ -135,6 +145,7 @@ public class Patient implements Serializable {
 
     /**
      * Returns true if the patient's hemoglobin is normal
+     *
      * @return True if the patient's hemoglobin is normal
      */
     public boolean isNormalHemoglobin() {
@@ -147,6 +158,7 @@ public class Patient implements Serializable {
 
     /**
      * Returns true if the patient's hemoglobin is low
+     *
      * @return True if the patient's hemoglobin is low
      */
     public boolean isLowHemoglobin() {
@@ -159,6 +171,7 @@ public class Patient implements Serializable {
 
     /**
      * Method to check if the patient is male
+     *
      * @return True if patient is a male
      */
     public boolean isMale() {
@@ -167,6 +180,7 @@ public class Patient implements Serializable {
 
     /**
      * Method to check if the patient is female
+     *
      * @return True if patient is a female
      */
     public boolean isFemale() {
@@ -175,6 +189,7 @@ public class Patient implements Serializable {
 
     /**
      * Method to check if the patients are equal
+     *
      * @param other Patient object
      * @return True if patients equal
      */
@@ -189,6 +204,7 @@ public class Patient implements Serializable {
 
     /**
      * Method to check if the patient is empty
+     *
      * @return True if patient is empty
      */
     public boolean isEmpty() {

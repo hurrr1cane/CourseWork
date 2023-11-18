@@ -106,3 +106,10 @@
     -fx-background-color: #444444; /* Dark background color for ComboBox dropdown */
     -fx-text-fill: #ffffff; /* White text color for ComboBox dropdown items */
 }
+
+/* Style for selected table rows */
+.table-row-cell:selected {
+    -fx-background-color: #00cc00; /* Green background color for selected rows */
+    -fx-text-fill: #ffffff; /* White text color for selected rows */
+}
+

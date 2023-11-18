@@ -3,7 +3,7 @@ package com.mhorak.coursework.exception;
 /**
  * Class for exceptions, when gender field isn't filled
  */
-public class GenderFieldException extends InputFieldException{
+public class GenderFieldException extends InputFieldException {
     public GenderFieldException(String message) {
         super(message);
     }

@@ -14,6 +14,7 @@ import java.io.IOException;
 public class PatientsApp extends Application {
     /**
      * Starts the application
+     *
      * @param stage The stage
      * @throws IOException If the FXML file cannot be loaded
      */
@@ -38,6 +39,7 @@ public class PatientsApp extends Application {
 
     /**
      * Main method
+     *
      * @param args Command line arguments
      */
     public static void main(String[] args) {
