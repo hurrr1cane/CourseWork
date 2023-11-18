@@ -10,7 +10,7 @@ import javafx.stage.Stage;
 import javafx.scene.layout.VBox;
 import com.mhorak.coursework.exception.*;
 
-import java.time.Year;
+import static com.mhorak.coursework.tool.PatientsTool.*;
 
 /**
  * Controller class for the patient window
@@ -111,85 +111,6 @@ public class PatientWindowController {
             System.err.println("Validation Error: " + e.getMessage());
             showErrorAlert(e.getMessage());
             return false;
-        }
-    }
-
-    /**
-     * Validates the name and surname fields
-     *
-     * @param name   The name or surname to validate
-     * @param isName True if the field is the name field, false if the field is the surname field
-     * @throws NameFieldException    Thrown when the name field is incorrect
-     * @throws SurnameFieldException Thrown when the surname field is incorrect
-     */
-    private void validateNameField(String name, boolean isName) throws NameFieldException, SurnameFieldException {
-        // Name should contain only letters and hyphens, not starting or ending with hyphen
-
-        //Name should contain only letters and hyphens, not starting or ending with hyphen and not containing two consecutive hyphens
-        //And be at least 2 characters long and not longer than 30 characters
-        boolean checker = !name.matches("^[a-zA-Z]+(-[a-zA-Z]+)*$") || name.length() < 2 || name.length() > 30;
-        if (isName) {
-            if (checker) {
-                throw new NameFieldException();
-            }
-        } else {
-            if (checker) {
-                throw new SurnameFieldException();
-            }
-        }
-    }
-
-    /**
-     * Validates the year of birth field
-     *
-     * @param year The year of birth to validate
-     * @throws YearOfBirthFieldException Thrown when the year of birth field is incorrect
-     */
-    private void validateYearOfBirthField(String year) throws YearOfBirthFieldException {
-        // Year of birth should be a positive integer
-        if (!year.matches("^[1-9]\\d*$") || Year.now().getValue() - Integer.parseInt(year) < 0) {
-            throw new YearOfBirthFieldException();
-        }
-    }
-
-    /**
-     * Validates the gender field
-     *
-     * @param gender The field to be validated
-     * @throws GenderFieldException Thrown when gender field is incorrect
-     */
-    private void validateGenderField(String gender) throws GenderFieldException {
-        // Gender should not be null or empty
-        if (gender == null || gender.trim().isEmpty()) {
-            throw new GenderFieldException();
-        }
-    }
-
-    /**
-     * Validates the temperature field
-     *
-     * @param temperature The temperature to validate
-     * @throws TemperatureFieldException Thrown when the temperature field is incorrect
-     */
-    private void validateTemperatureField(String temperature) throws TemperatureFieldException {
-        // Temperature should be a positive decimal number
-        // Temperature must be not higher than 50 degrees Celsius
-        if (!temperature.matches("^\\d*\\.?\\d+$") || Double.parseDouble(temperature) > 50) {
-            throw new TemperatureFieldException();
-        }
-    }
-
-    /**
-     * Validates the hemoglobin field
-     *
-     * @param hemoglobin The hemoglobin to validate
-     * @throws HemoglobinFieldException Thrown when the hemoglobin field is incorrect
-     */
-    private void validateHemoglobinField(String hemoglobin) throws HemoglobinFieldException {
-        // Hemoglobin should be a positive decimal number
-        // Must be not higher than 250 g/L
-        if (!hemoglobin.matches("^\\d*\\.?\\d+$") || Double.parseDouble(hemoglobin) > 250) {
-            throw new HemoglobinFieldException();
         }
     }
 

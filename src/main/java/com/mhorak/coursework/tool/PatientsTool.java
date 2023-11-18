@@ -1,10 +1,11 @@
 package com.mhorak.coursework.tool;
 
-import com.mhorak.coursework.exception.FileReadException;
+import com.mhorak.coursework.exception.*;
 import com.mhorak.coursework.model.Patient;
 import javafx.collections.ObservableList;
 
 import java.io.*;
+import java.time.Year;
 import java.util.List;
 
 /**
@@ -29,7 +30,7 @@ public class PatientsTool {
 
             System.out.println("Patients saved to: " + file.getAbsolutePath());
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Error saving patients to: " + file.getAbsolutePath());
         }
     }
 
@@ -78,6 +79,23 @@ public class PatientsTool {
         }
 
         if (fields.length != 7) {
+            throw new FileReadException();
+        }
+
+        try {
+            if (!fields[0].matches("^[1-9]\\d*$")) {
+                throw new NumberFieldException();
+            }
+            validateNameField(fields[2], true);
+            validateNameField(fields[1], false);
+            validateYearOfBirthField(fields[3]);
+            validateGenderField(fields[4]);
+            validateTemperatureField(fields[5]);
+            validateHemoglobinField(fields[6]);
+
+        } catch (InputFieldException e) {
+            // Handle the exception (you may choose to display an error message)
+            System.err.println("Validation Error: " + e.getMessage());
             throw new FileReadException();
         }
 
@@ -148,5 +166,85 @@ public class PatientsTool {
             }
         }
         return true;
+    }
+
+    /**
+     * Validates the name and surname fields
+     *
+     * @param name   The name or surname to validate
+     * @param isName True if the field is the name field, false if the field is the surname field
+     * @throws NameFieldException    Thrown when the name field is incorrect
+     * @throws SurnameFieldException Thrown when the surname field is incorrect
+     */
+    public static void validateNameField(String name, boolean isName) throws NameFieldException, SurnameFieldException {
+        // Name should contain only letters and hyphens, not starting or ending with hyphen
+
+        //Name should contain only letters and hyphens, not starting or ending with hyphen and not containing two consecutive hyphens
+        //And be at least 2 characters long and not longer than 30 characters
+        boolean checker = !name.matches("^[a-zA-Z]+(-[a-zA-Z]+)*$") || name.length() < 2 || name.length() > 30;
+        if (isName) {
+            if (checker) {
+                throw new NameFieldException();
+            }
+        } else {
+            if (checker) {
+                throw new SurnameFieldException();
+            }
+        }
+    }
+
+    /**
+     * Validates the year of birth field
+     *
+     * @param year The year of birth to validate
+     * @throws YearOfBirthFieldException Thrown when the year of birth field is incorrect
+     */
+    public static void validateYearOfBirthField(String year) throws YearOfBirthFieldException {
+        // Year of birth should be a positive integer
+        if (!year.matches("^[1-9]\\d*$") || Year.now().getValue() - Integer.parseInt(year) < 0) {
+            throw new YearOfBirthFieldException();
+        }
+    }
+
+    /**
+     * Validates the gender field
+     *
+     * @param gender The field to be validated
+     * @throws GenderFieldException Thrown when gender field is incorrect
+     */
+    public static void validateGenderField(String gender) throws GenderFieldException {
+        // Gender should not be null or empty
+        // Gender should be either Male or Female
+        if (gender == null || gender.trim().isEmpty() || !(gender.equals("Male") || gender.equals("Female"))) {
+            throw new GenderFieldException();
+        }
+    }
+
+    /**
+     * Validates the temperature field
+     *
+     * @param temperature The temperature to validate
+     * @throws TemperatureFieldException Thrown when the temperature field is incorrect
+     */
+    public static void validateTemperatureField(String temperature) throws TemperatureFieldException {
+        // Temperature should be a positive decimal number
+        // Temperature must be not higher than 50 degrees Celsius
+        if (!temperature.matches("^\\d*\\.?\\d+$") || Double.parseDouble(temperature) > 50) {
+            throw new TemperatureFieldException();
+        }
+    }
+
+    /**
+     * Validates the hemoglobin field
+     *
+     * @param hemoglobin The hemoglobin to validate
+     * @throws HemoglobinFieldException Thrown when the hemoglobin field is incorrect
+     */
+    public static void validateHemoglobinField(String hemoglobin) throws HemoglobinFieldException {
+        // Hemoglobin should be a positive decimal number
+        // Must be not higher than 250 g/L
+        if (!hemoglobin.matches("^\\d*\\.?\\d+$") || Double.parseDouble(hemoglobin) > 250) {
+            throw new HemoglobinFieldException();
+        }
     }
 }

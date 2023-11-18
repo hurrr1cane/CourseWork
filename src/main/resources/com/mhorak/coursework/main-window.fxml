@@ -65,7 +65,7 @@
                         <PropertyValueFactory property="gender"/>
                     </cellValueFactory>
                 </TableColumn>
-                <TableColumn prefWidth="60.0" text="t">
+                <TableColumn prefWidth="60.0" text="T">
                     <cellValueFactory>
                         <PropertyValueFactory property="t"/>
                     </cellValueFactory>
