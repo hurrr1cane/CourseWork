@@ -33,7 +33,8 @@
                 <TextField fx:id="lastNameField" GridPane.columnIndex="1" GridPane.rowIndex="1" promptText="Last Name"/>
 
                 <Label text="Gender" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-                <ComboBox fx:id="genderComboBox" GridPane.columnIndex="1" GridPane.rowIndex="2" promptText="Gender">
+                <ComboBox fx:id="genderComboBox" GridPane.columnIndex="1" GridPane.rowIndex="2" promptText="Gender"
+                          VBox.vgrow="NEVER" HBox.hgrow="ALWAYS">
                     <items>
                         <FXCollections fx:factory="observableArrayList">
                             <String fx:value="Male"/>

@@ -12,9 +12,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<StackPane minHeight="400.0" minWidth="600.0" prefHeight="600.0" prefWidth="900.0" stylesheets="@styles.css"
-           xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
-           fx:controller="com.mhorak.coursework.controller.MainWindowController">
+<StackPane minHeight="400.0" minWidth="600.0" prefHeight="600.0" prefWidth="900.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mhorak.coursework.controller.MainWindowController">
 
 
     <!-- Add a menu bar to the top of the window -->
@@ -22,16 +20,18 @@
 
         <MenuBar>
             <Menu text="File">
-                <MenuItem onAction="#handleOpen" text="Open"/>
-                <MenuItem onAction="#handleSave" text="Save"/>
-                <MenuItem onAction="#handleSaveAs" text="Save as"/>
-                <MenuItem onAction="#handleExit" text="Exit"/>
+                <MenuItem onAction="#handleOpen" text="Open" />
+                <MenuItem onAction="#handleSave" text="Save" />
+                <MenuItem onAction="#handleSaveAs" text="Save as" />
+                <MenuItem onAction="#handleExit" text="Exit" />
             </Menu>
             <Menu text="Edit">
-                <MenuItem onAction="#handleNewPatient" text="New Patient"/>
+                <MenuItem onAction="#handleUndo" text="Undo" />
+                <MenuItem onAction="#handleRedo" text="Redo" />
+                <MenuItem onAction="#handleNewPatient" text="New Patient" />
             </Menu>
             <Menu text="Help">
-                <!-- Add help-related menu items as needed -->
+                <MenuItem onAction="#handleHelp" text="About" />
             </Menu>
         </MenuBar>
 
@@ -40,37 +40,37 @@
             <columns>
                 <TableColumn prefWidth="30.0" text="№">
                     <cellValueFactory>
-                        <PropertyValueFactory property="number"/>
+                        <PropertyValueFactory property="number" />
                     </cellValueFactory>
                 </TableColumn>
                 <TableColumn prefWidth="200.0" text="Прізвище">
                     <cellValueFactory>
-                        <PropertyValueFactory property="lastName"/>
+                        <PropertyValueFactory property="lastName" />
                     </cellValueFactory>
                 </TableColumn>
                 <TableColumn prefWidth="200.0" text="Ім‘я">
                     <cellValueFactory>
-                        <PropertyValueFactory property="firstName"/>
+                        <PropertyValueFactory property="firstName" />
                     </cellValueFactory>
                 </TableColumn>
                 <TableColumn prefWidth="100.0" text="Рік народження">
                     <cellValueFactory>
-                        <PropertyValueFactory property="yearOfBirth"/>
+                        <PropertyValueFactory property="yearOfBirth" />
                     </cellValueFactory>
                 </TableColumn>
                 <TableColumn prefWidth="60.0" text="Стать">
                     <cellValueFactory>
-                        <PropertyValueFactory property="gender"/>
+                        <PropertyValueFactory property="gender" />
                     </cellValueFactory>
                 </TableColumn>
                 <TableColumn prefWidth="60.0" text="t">
                     <cellValueFactory>
-                        <PropertyValueFactory property="t"/>
+                        <PropertyValueFactory property="t" />
                     </cellValueFactory>
                 </TableColumn>
                 <TableColumn prefWidth="100.0" text="Гемоглобін">
                     <cellValueFactory>
-                        <PropertyValueFactory property="hemoglobin"/>
+                        <PropertyValueFactory property="hemoglobin" />
                     </cellValueFactory>
                 </TableColumn>
                 <TableColumn prefWidth="200.0" text="Повідомлення">
@@ -84,68 +84,56 @@
                     <children>
                         <VBox prefHeight="128.0" prefWidth="223.0">
                             <children>
-                                <Button alignment="TOP_CENTER" onAction="#handleYoungestMenWithTHemoglobin"
-                                        style="-fx-min-width: 200px;"
-                                        text="Youngest Men with Normal t and Low Hemoglobin" textAlignment="CENTER">
+                                <Button alignment="TOP_CENTER" onAction="#handleYoungestMenWithTHemoglobin" style="-fx-min-width: 300;" text="Youngest men with normal t and low hemoglobin" textAlignment="CENTER">
                                     <padding>
-                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                     </padding>
                                     <VBox.margin>
-                                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0"/>
+                                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                                     </VBox.margin>
                                 </Button>
-                                <Button alignment="TOP_CENTER" onAction="#handleOlderHighHemoglobinLowT"
-                                        style="-fx-min-width: 150px;"
-                                        text="Patients Older Than 40 with High Hemoglobin and Low t"
-                                        textAlignment="CENTER">
+                                <Button alignment="TOP_CENTER" onAction="#handleOlderHighHemoglobinLowT" style="-fx-min-width: 300;" text="Find older than 40 with high hemo and low t" textAlignment="CENTER">
                                     <padding>
-                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                     </padding>
                                     <VBox.margin>
-                                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0"/>
+                                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                                     </VBox.margin>
                                 </Button>
-                                <Button alignment="TOP_CENTER" onAction="#handleOldestWomenSameNameNormalHemoglobin"
-                                        style="-fx-min-width: 150px;" text="Oldest Women with Normal Hemoglobin by Name"
-                                        textAlignment="CENTER">
+                                <Button alignment="TOP_CENTER" onAction="#handleOldestWomenSameNameNormalHemoglobin" style="-fx-min-width: 300;" text="Oldest women with normal hemo with same name" textAlignment="CENTER">
                                     <padding>
-                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                     </padding>
                                     <VBox.margin>
-                                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0"/>
+                                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                                     </VBox.margin>
                                 </Button>
                             </children>
                         </VBox>
                         <VBox prefHeight="128.0" prefWidth="400.0">
                             <children>
-                                <Button alignment="TOP_CENTER" onAction="#handleSortByTButton"
-                                        style="-fx-min-width: 200px;" text="Sort by t" textAlignment="CENTER">
+                                <Button alignment="TOP_CENTER" onAction="#handleSortByTButton" style="-fx-min-width: 300;" text="Sort by t" textAlignment="CENTER">
                                     <padding>
-                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                     </padding>
                                     <VBox.margin>
-                                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0"/>
+                                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                                     </VBox.margin>
                                 </Button>
-                                <Button alignment="TOP_CENTER" onAction="#handleHighHemoglobinInWomenButton"
-                                        style="-fx-min-width: 200px;" text="High Hemoglobin in Women"
-                                        textAlignment="CENTER">
+                                <Button alignment="TOP_CENTER" onAction="#handleHighHemoglobinInWomenButton" style="-fx-min-width: 300;" text="High hemoglobin in women" textAlignment="CENTER">
                                     <padding>
-                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                     </padding>
                                     <VBox.margin>
-                                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0"/>
+                                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                                     </VBox.margin>
                                 </Button>
-                                <Button alignment="TOP_CENTER" onAction="#handleEncourageYoungPatients"
-                                        prefHeight="27.0" prefWidth="214.0" style="-fx-min-width: 150px;"
-                                        text="Encourage Young Patients" textAlignment="CENTER" VBox.vgrow="ALWAYS">
+                                <Button alignment="TOP_CENTER" onAction="#handleEncourageYoungPatients" prefHeight="27.0" prefWidth="214.0" style="-fx-min-width: 300;" text="Encourage young patients" textAlignment="CENTER" VBox.vgrow="ALWAYS">
                                     <padding>
-                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                     </padding>
                                     <VBox.margin>
-                                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0"/>
+                                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                                     </VBox.margin>
                                 </Button>
                             </children>
@@ -154,36 +142,36 @@
                 </HBox>
                 <VBox alignment="TOP_RIGHT" HBox.hgrow="ALWAYS">
                     <children>
-                        <Button onAction="#handleNewPatient" style="-fx-min-width: 150px;" text="Add Another Patient">
+                        <Button alignment="CENTER" onAction="#handleNewPatient" style="-fx-min-width: 150px;" text="Add Another Patient">
                             <VBox.margin>
-                                <Insets top="5.0"/>
+                                <Insets top="5.0" />
                             </VBox.margin>
                             <padding>
-                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                             </padding>
                         </Button>
-                        <Button onAction="#handleEditPatient" style="-fx-min-width: 150px;" text="Edit patient">
+                        <Button alignment="CENTER" onAction="#handleEditPatient" style="-fx-min-width: 150px;" text="Edit patient">
                             <VBox.margin>
-                                <Insets top="5.0"/>
+                                <Insets top="5.0" />
                             </VBox.margin>
                             <padding>
-                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                             </padding>
                         </Button>
-                        <Button onAction="#handleDeletePatient" style="-fx-min-width: 150px;" text="Delete patient">
+                        <Button alignment="CENTER" onAction="#handleDeletePatient" style="-fx-min-width: 150px;" text="Delete patient">
                             <VBox.margin>
-                                <Insets top="5.0"/>
+                                <Insets top="5.0" />
                             </VBox.margin>
                             <padding>
-                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                             </padding>
                         </Button>
-                        <Button onAction="#handleBack" style="-fx-min-width: 150px;" text="Back to original list">
+                        <Button alignment="CENTER" onAction="#handleBack" style="-fx-min-width: 150px;" text="Back to original list">
                             <VBox.margin>
-                                <Insets top="5.0"/>
+                                <Insets top="5.0" />
                             </VBox.margin>
                             <padding>
-                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                             </padding>
                         </Button>
                     </children>

@@ -8,17 +8,20 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import static com.mhorak.coursework.tool.PatientsTool.loadPatientsFromCsv;
@@ -31,17 +34,16 @@ public class MainWindowController {
     ObservableList<Patient> patientList = FXCollections.observableArrayList();
     ObservableList<Patient> visiblePatientList = FXCollections.observableArrayList();
 
+    LinkedList<ObservableList<Patient>> patientListHistory = new LinkedList<>();
+    int historyIndex = -1;
+
     public void initialize() {
-        /*// Initialize patientList with data (you can add your Patient objects here)
 
-        Patient patient1 = new Patient(1, "Smith", "John", 1990, "Male", 25.5, 14.2);
-        Patient patient2 = new Patient(2, "Johnson", "Jane", 1985, "Female", 28.3, 12.8);
-        Patient patient3 = new Patient(3, "Wohnson", "Mane", 1999, "Female", 26.3, 20.0);
-
-        patientList.addAll(patient1, patient2, patient3);
-        visiblePatientList.addAll(patientList);*/
         // Set the TableView items
         tableView.setItems(visiblePatientList);
+
+        updateHistoryList();
+
     }
 
     @FXML
@@ -72,10 +74,7 @@ public class MainWindowController {
         // Perform counting sort for females
         countingSortByT(females);
 
-        // Clear the original patientList and add sorted patients back
-        //patientList.clear();
-        //patientList.addAll(males);
-        //patientList.addAll(females);
+        // Clear the original patientList and add the sorted patients
         visiblePatientList.clear();
         visiblePatientList.addAll(males);
         visiblePatientList.addAll(females);
@@ -172,25 +171,25 @@ public class MainWindowController {
     }
 
     @FXML
-    private void handleResetButton(ActionEvent event) {
-        // Reset the TableView items
-        tableView.setItems(patientList);
-
-        // Reset the custom cell factory for "Повідомлення"
-        TableColumn<Patient, String> messageColumn = (TableColumn<Patient, String>) tableView.getColumns().get(7); // Assuming "Повідомлення" is the 8th column
-        messageColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-
-        // This line will refresh the table to apply the custom cell factory
-        tableView.refresh();
-    }
-
-    @FXML
     private void handleNewPatient(ActionEvent event) {
         // Create a new patient
         Patient newPatient = new Patient();
 
         // Load and show the patient form for adding a new patient
-        loadPatientForm(newPatient);
+        loadPatientForm(newPatient, true);
+
+
+        if (!newPatient.isEmpty()) {
+            // Add the new patient to the list
+            newPatient.setNumber(patientList.size() + 1);
+            patientList.add(newPatient);
+            visiblePatientList.clear();
+            visiblePatientList.addAll(patientList);
+            tableView.refresh();
+
+            updateHistoryList();
+        }
+
     }
 
     @FXML
@@ -200,23 +199,33 @@ public class MainWindowController {
 
         if (selectedPatient != null) {
             // Load and show the patient form for editing the selected patient
-            loadPatientForm(selectedPatient);
+            loadPatientForm(selectedPatient, false);
+
+            // Add the new patient to the list
+            patientList.set(selectedPatient.getNumber() - 1, selectedPatient);
+            visiblePatientList.clear();
+            visiblePatientList.addAll(patientList);
+            tableView.refresh();
+
+            updateHistoryList();
         }
     }
 
-    private void loadPatientForm(Patient patient) {
+    private void loadPatientForm(Patient patient, boolean isNewPatient) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("patient-window.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/mhorak/coursework/patient-window.fxml"));
             Parent root = loader.load();
 
             PatientWindowController controller = loader.getController();
-            controller.setPatient(patient);
+            controller.setPatient(patient, isNewPatient);
 
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
             stage.setTitle("Patient Form");
 
-            stage.show();
+            // Use showAndWait to make the window modal
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -244,6 +253,8 @@ public class MainWindowController {
         visiblePatientList.clear();
         visiblePatientList.addAll(patientList);
         tableView.refresh();
+
+        updateHistoryList();
     }
 
 
@@ -278,8 +289,22 @@ public class MainWindowController {
         }
     }
 
-    @FXML void handleExit(ActionEvent event) {
+    @FXML
+    void handleExit(ActionEvent event) {
+        // Get the current stage
+        Stage stage = (Stage) tableView.getScene().getWindow();
 
+        // Close the stage
+        stage.close();
+    }
+
+    @FXML
+    void handleHelp(ActionEvent event) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Help");
+        alert.setHeaderText("Help");
+        alert.setContentText("For help, please contact the developer at maksym.horak.pz.2022@lpnu.ua");
+        alert.show();
     }
 
     @FXML
@@ -295,58 +320,6 @@ public class MainWindowController {
         // This line will refresh the table to apply the updated data
         tableView.refresh();
     }
-
-
-    /*@FXML
-    private void handleOldestWomenSameNameNormalHemoglobin(ActionEvent event) {
-        // Explicitly specify the column type for "Повідомлення"
-        TableColumn<Patient, String> messageColumn = (TableColumn<Patient, String>) tableView.getColumns().get(7); // Assuming "Повідомлення" is the 8th column
-        messageColumn.setCellFactory(new Callback<TableColumn<Patient, String>, TableCell<Patient, String>>() {
-            @Override
-            public TableCell<Patient, String> call(TableColumn<Patient, String> param) {
-                return new TableCell<Patient, String>() {
-                    @Override
-                    protected void updateItem(String item, boolean empty) {
-                        super.updateItem(item, empty);
-                        if (empty) {
-                            setText(null);
-                        } else {
-                            // Get the patient for this row
-                            Patient currentPatient = getTableView().getItems().get(getIndex());
-
-                            // Check if the patient is female with normal hemoglobin and has the same name
-                            // Determine the ones with normal hemoglobin
-                            // Determine the oldest one among those with the same name
-                            boolean hasSameName = false;
-                            Patient oldestWithSameName = null;
-
-                            for (Patient patient : patientList) {
-                                if (!patient.equals(currentPatient) &&
-                                        patient.isFemale() &&
-                                        patient.isNormalHemoglobin() &&
-                                        patient.getFirstName().equals(currentPatient.getFirstName())) {
-                                    if (!hasSameName || oldestWithSameName.getAge() < patient.getAge()) {
-                                        hasSameName = true;
-                                        oldestWithSameName = patient;
-                                    }
-                                }
-                            }
-
-                            // Update the message field for matching patients
-                            if (hasSameName) {
-                                setText("Oldest with same name");
-                            } else {
-                                setText("");
-                            }
-                        }
-                    }
-                };
-            }
-        });
-
-        // This line will refresh the table to apply the custom cell factory
-        tableView.refresh();
-    }*/
 
     @FXML
     private void handleOldestWomenSameNameNormalHemoglobin(ActionEvent event) {
@@ -379,6 +352,9 @@ public class MainWindowController {
     private void handleEncourageYoungPatients(ActionEvent event) {
         // Explicitly specify the column type for "Повідомлення"
         TableColumn<Patient, String> messageColumn = (TableColumn<Patient, String>) tableView.getColumns().get(7); // Assuming "Повідомлення" is the 8th column
+
+        handleBack(event);
+
         messageColumn.setCellFactory(new Callback<TableColumn<Patient, String>, TableCell<Patient, String>>() {
             @Override
             public TableCell<Patient, String> call(TableColumn<Patient, String> param) {
@@ -394,7 +370,7 @@ public class MainWindowController {
 
                             // Update the message field for matching patients
                             if (currentPatient.isNormalT() && currentPatient.getAge() < 28) {
-                                setText("Oldest with same name");
+                                setText(String.format("%s, you are doing great!", currentPatient.getLastName()));
                             } else {
                                 setText("");
                             }
@@ -416,15 +392,73 @@ public class MainWindowController {
         // Remove the selected patient from the list
         patientList.remove(selectedPatient);
 
+        setPatientsNumbers(patientList);
+
         // Update the TableView to reflect the new patient
         tableView.setItems(patientList);
+
+        updateHistoryList();
+    }
+
+    private void updateHistoryList() {
+        // Add the current patientList to the history
+        patientListHistory.removeAll(patientListHistory.subList(historyIndex + 1, patientListHistory.size()));
+        patientListHistory.add(FXCollections.observableList(List.copyOf(patientList)));
+        historyIndex++;
+    }
+
+    private void setPatientsNumbers(ObservableList<Patient> patientList) {
+        for (int i = 0; i < patientList.size(); i++) {
+            patientList.get(i).setNumber(i + 1);
+        }
     }
 
     @FXML
     void handleBack(ActionEvent event) {
+
         visiblePatientList.clear();
         visiblePatientList.addAll(patientList);
         tableView.refresh();
+
+        TableColumn<Patient, String> messageColumn = (TableColumn<Patient, String>) tableView.getColumns().get(7); // Assuming "Повідомлення" is the 8th column
+        messageColumn.setCellFactory(new Callback<TableColumn<Patient, String>, TableCell<Patient, String>>() {
+            @Override
+            public TableCell<Patient, String> call(TableColumn<Patient, String> param) {
+                return new TableCell<Patient, String>() {
+                    @Override
+                    protected void updateItem(String item, boolean empty) {
+                        super.updateItem(item, empty);
+
+                            setText(null);
+
+                    }
+                };
+            }
+        });
+    }
+
+    @FXML
+    void handleUndo(ActionEvent event) {
+        if (historyIndex > 0) {
+            historyIndex--;
+            patientList.clear();
+            patientList.addAll(patientListHistory.get(historyIndex));
+            visiblePatientList.clear();
+            visiblePatientList.addAll(patientList);
+            tableView.refresh();
+        }
+    }
+
+    @FXML
+    void handleRedo(ActionEvent event) {
+        if (historyIndex < patientListHistory.size() - 1) {
+            historyIndex++;
+            patientList.clear();
+            patientList.addAll(patientListHistory.get(historyIndex));
+            visiblePatientList.clear();
+            visiblePatientList.addAll(patientList);
+            tableView.refresh();
+        }
     }
 
 }
