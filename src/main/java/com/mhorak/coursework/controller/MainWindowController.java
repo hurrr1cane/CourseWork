@@ -17,10 +17,8 @@ import javafx.util.Callback;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.mhorak.coursework.tool.PatientsTool.*;
 
@@ -352,25 +350,33 @@ public class MainWindowController {
      */
     @FXML
     private void handleOldestWomenSameNameNormalHemoglobin() {
-        // Filter the patientList to include only women with normal hemoglobin
-        ObservableList<Patient> filteredList = patientList.filtered(
-                patient -> patient.isFemale() && patient.isNormalHemoglobin());
 
-        // Create a map to store the oldest patient for each name
-        Map<String, Patient> oldestPatientsByName = new HashMap<>();
+        Map<String, List<Patient>> womenGroupedByFirstName = patientList.stream()
+                .filter(Patient::isFemale)
+                .collect(Collectors.groupingBy(Patient::getFirstName));
 
-        // Iterate through the filtered list to find the oldest patient with the same name
-        for (Patient patient : filteredList) {
-            String firstName = patient.getFirstName();
-            if (!oldestPatientsByName.containsKey(firstName) ||
-                    oldestPatientsByName.get(firstName).getAge() < patient.getAge()) {
-                oldestPatientsByName.put(firstName, patient);
-            }
-        }
+        List<LinkedList<Patient>> womenWithSameName = womenGroupedByFirstName.values().stream()
+                .filter(patients -> patients.size() > 1)
+                .map(LinkedList::new)
+                .collect(Collectors.toList());
 
-        // Clear the original patientList and add the oldest patients with the same name
+        womenWithSameName.forEach(patients -> {
+            Optional<Patient> oldestNormalHemoglobinPatient = patients.stream()
+                    .filter(Patient::isNormalHemoglobin)
+                    .max(Comparator.comparingInt(Patient::getAge));
+
+            patients.clear();
+
+            oldestNormalHemoglobinPatient.ifPresent(patients::add);
+        });
+
+        womenWithSameName.removeIf(AbstractCollection::isEmpty);
+
+        //Add the oldest patients to the visiblePatientList
         visiblePatientList.clear();
-        visiblePatientList.addAll(oldestPatientsByName.values());
+        visiblePatientList.addAll(womenWithSameName.stream()
+                .map(LinkedList::getFirst)
+                .toList());
 
         // This line will refresh the table to apply the updated data
         tableView.refresh();
