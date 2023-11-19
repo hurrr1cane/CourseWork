@@ -8,10 +8,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
@@ -48,6 +45,26 @@ public class MainWindowController {
 
         // Set the TableView items
         tableView.setItems(visiblePatientList);
+
+
+        // Create a ContextMenu
+        ContextMenu contextMenu = new ContextMenu();
+
+        // Create MenuItems for the ContextMenu
+        MenuItem menuItemAddPatient = new MenuItem("Add patient");
+        MenuItem menuItemUndo = new MenuItem("Undo");
+        MenuItem menuItemRedo = new MenuItem("Redo");
+
+        // Add the MenuItems to the ContextMenu
+        contextMenu.getItems().addAll(menuItemAddPatient, menuItemUndo, menuItemRedo);
+
+        // Set the context menu for the TableView
+        tableView.setContextMenu(contextMenu);
+
+        // Add event handlers to the menu items
+        menuItemAddPatient.setOnAction(event -> handleNewPatient());
+        menuItemUndo.setOnAction(event -> handleUndo());
+        menuItemRedo.setOnAction(event -> handleRedo());
 
         updateHistoryList();
 
