@@ -1,10 +1,14 @@
-# Student Managing System
-Welcome to the Student Managing System, a Java-based application developed using JavaFX to manage and display student information effectively. This project is part of my coursework for the Object-Oriented Programming (OOP) course.
+# Patient Management System
+## Overview
+Welcome to the Patient Management System! This project is designed to help manage and display patient information efficiently. The system is built using Java and JavaFX, providing a robust and user-friendly interface for handling patient data.
 
 ## Features
-- **Add Student**: Add new students with details like name, age etc.
-- **Display Students**: View a list of all students.
-- **Edit Student Information**: Update existing student details.
-- **Delete Student**: Remove a student from the system.
-- **Save file**: Read students from csv file or save them back.
+- **Patient Information Display**: View detailed information about each patient.
+- **Add New Patients**: Easily add new patients to the system.
+- **Update Patient Information**: Edit existing patient details as needed.
+- **Delete Patients**: Remove patients from the system.
+- **Save Patients**: Save patients to file or read them from .csv file.
 
+## Technologies Used
+- **Java**: The core programming language used to build the application.
+- **JavaFX**: Used for creating the graphical user interface.
